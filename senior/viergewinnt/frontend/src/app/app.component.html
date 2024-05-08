@@ -1,0 +1,22 @@
+<main class="main">
+  <div class="content">
+    <h1>Vier Gewinnt!</h1>
+    <p>Spieler: {{currentPlayer}}</p>
+    <p *ngIf="winner">Gewonnen hat: {{winner}}</p>
+    <button (click)="onNewGameClick()">Neues Spiel</button>
+    <div class="board">
+      <div class="row" *ngFor="let row of board; index as j">
+        <div class="cell" *ngFor="let column of row; index as i" (click)="onColumnClick(i)">
+          <div *ngIf="column !== 0"
+            class="disc"
+            [ngClass]="{
+              playerone: column === 1,
+              playertwo: column === 2
+            }"
+          ></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+<router-outlet />

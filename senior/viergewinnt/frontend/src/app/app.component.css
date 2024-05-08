@@ -1,0 +1,35 @@
+/* Styling for the game cells */
+.row {
+    display: flex;
+}
+
+.cell {
+    width: 50px;
+    height: 50px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Styling for the player's discs */
+.disc {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin: 5px;
+}
+
+/* Styling for the player's discs when dropped */
+.disc.playerone {
+    background-color: #ff0000;
+}
+
+.disc.playertwo {
+    background-color: #0000ff;
+}
+
+
+/* Styling for the winning combination */
+.winning-combination {
+    background-color: #ffff00;
+}

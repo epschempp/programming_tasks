@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Todo App</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Todo App</h1>
+    <label for="todoSelect">Select a todo:</label>
+    <select id="todoSelect"></select>
+    <button onclick="addTodo()">Add Todo</button>
+    <ul id="todoList">
+      <!--Dieser Block ist ein Beispiel wie eine Todo gerendert werden könnte-->
+      <li id="todoItem1">
+        <span>01.01.2023: Write code</span>
+        <button onclick="editTodo(1)">Edit</button>
+        <button onclick="deleteTodo(1)">Delete</button>
+      </li>
+      <!--Block Ende-->
+      <!-- Dieser Block ist ein Beispiel wie eine Todo im Editiermodus aussehen könnte-->
+      <li id="todoItem2">
+        <select id="todoEditSelect">
+          <option>Write Code</option>
+          <option>Clean the house</option>
+        </select>
+        <button onclick="saveEditedTodo()">Save</button>
+        <button onclick="cancelEdit()">Cancel</button>
+      </li>
+      <!--Block Ende-->
+    </ul>
+    <button id="saveEditButton" onclick="saveEditedTodo()" style="display: none;">Save</button>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
