@@ -10,7 +10,7 @@
     <p>Hier kann man zwei Zahlen miteinander addieren, subtrahieren, multiplizieren oder durcheinander dividieren.</p>
     <div class="input-group">
       <label for="number1">Zahl 1:</label>
-      <input type="number" id="number1" placeholder="Zahl eingeben">
+      <input type="number" id="number1" placeholder="Erste Zahl eingeben">
     </div>
 
     <div class="input-group">
@@ -22,6 +22,12 @@
         - Multiplizieren
         - Dividieren
       -->
+      <select id="operation">
+        <option value="+">Addieren</option>
+        <option value="-">Subtrahieren</option>
+        <option value="x">Multiplizieren</option>
+        <option value=":">Dividieren</option>
+      </select>
     </div>
 
     <div class="input-group">
@@ -29,12 +35,20 @@
       <!--
         Füge hier bitte ein Input für die zweite Zahl ein.
       -->
+      <input type="number" id="number2" placeholder="Zweite Zahl eingeben">
     </div>
 
     <!--
       Füge hier bitte ein HTML-ELement vom Typ "Button" ein, der die Funktion "berechne()" aufruft.
      -->
+    <button onclick="berechne()">Berechnen</button>
   </div>
+
+
+  <div id="calculationDisplay" class="containerCalculations">
+    <h2>Berechnungen</h2>
+  </div>
+
 
   <script src="script.js"></script>
 </body>

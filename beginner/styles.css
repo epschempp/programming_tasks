@@ -2,7 +2,7 @@ body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
-  background-color: #f5f5f5;
+  background-color: #1a2c56;
 }
 
 .container {
@@ -13,8 +13,34 @@ body {
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
+.containerCalculations {
+  max-width: 400px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #a59051;
+  border-radius: 10px;
+}
+
+.calculation {
+  max-width: 400px;
+  margin: 10px auto;
+  padding: 5px;
+  color: #1a2c56;
+  background-color: #fff;
+  border-radius: 5px;
+  border-color: #1a2c56;
+  border-width: 2px;
+  border-style: solid;
+  text-align: center;
+}
 
 h1 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+h2 {
   text-align: center;
   margin-bottom: 20px;
   color: #333;
