@@ -1,6 +1,6 @@
 /*
 Als Nutzer möchte ich auf einer Webseite aus einem vorgefertigten
-DropDown an möglichen Todos meine persönliche Todo Liste pflegen. Hierzu soll das 
+DropDown an möglichen Todos meine persönliche Todo Liste pflegen. Hierzu soll das
 ausgewählte Todo der Liste mit Datum hinzugefügt werden.
 
 Ich möchte die hinzugefügten Todos über ein Edit Button editieren können
@@ -8,7 +8,7 @@ Ich möchte die hinzugefügten Todos über ein Edit Button editieren können
 und über einen Löschen Button aus der aktuellen Liste entfernen können.
 
 Zusätzlich soll die aktuelle Liste immer automatisch in den Local Storage
-geschrieben werden, damit beim erneuten Laden meine zuvor gepflegten Todos 
+geschrieben werden, damit beim erneuten Laden meine zuvor gepflegten Todos
 erhalten bleiben.
 
 Die folgenden Funktionen und das HTML sollen bei der Implementierung helfen
@@ -16,78 +16,106 @@ und habe ich mit der Hilfe von ChatGPT erstellt. Ich benötige jetzt aber leider
 doch einen richtigen Softwareentwickler der mir hilft.
 */
 
-/*
-Beispiel Todos (Gerne austauschen ;))
-*/
 const todos = [
   "Buy groceries",
+  "Cook lunch",
   "Clean the house",
+  "Work in the garden",
+  "Water the flowers",
   "Go for a walk",
+  "Do sports",
   "Read a book",
   "Write code"
 ];
 
-// 1. Fülle das Select-Field "todoSelect" mit den Todo Optionen, 
-// damit diese auf der Webseite auswählbar sind.
+function fillTodoSelect() {
+  const select = document.getElementById('todoSelect');
+  todos.forEach(todo => {
+    let option = document.createElement('option');
+    option.value = todo;
+    option.innerText = todo;
+    select.appendChild(option);
+  });
+}
 
 function addTodo() {
-  /*
-  Implementiere hier die Funktion addTodo() welche ein ausgewähltes Todo
-  mit Datum und Editier und Löschen Button in die todoList im HTML überträgt.
-  */
+  const select = document.getElementById('todoSelect');
+  const selectedTodo = select.value;
+  const date = new Date().toLocaleDateString('de-DE');
+  const newTodo = { text: selectedTodo, date: date };
+
+  const todoList = getTodoList();
+  todoList.push(newTodo);
+  saveTodoList(todoList);
+  displayTodos();
 }
 
 function editTodo(index) {
-  /*
-  Implementiere die Funktion editTodo & saveEditedTodo weiter unten, 
-  welche den aktuell gewählten Todo Eintrag
-  auswählt und durch ein Dropdown mit den oben bekannten möglichen Todos
-  ersetzt, damit man ein anderes Todo wählen kann. Mache es möglich, das dieses
-  geänderte Todo gespeichert werden kann bzw. der Editiervorgang ohne Änderung
-  abgebrochen werden kann.
-  */
+  const todoList = getTodoList();
+  const todo = todoList[index];
+
+  const li = document.getElementById(`todoItem${index}`);
+  li.innerHTML = `
+    <select id="todoEditSelect${index}" class="todoSelect">
+      ${todos.map(todoOption => `<option ${todo.text === todoOption ? 'selected' : ''}>${todoOption}</option>`).join('')}
+    </select>
+    <button onclick="saveEditedTodo(${index})" class="add-button">Save</button>
+    <button onclick="cancelEdit(${index})">Cancel</button>
+  `;
 }
 
-function saveEditedTodo() {
-  /*
-  Diese Funktion kann dir helfen die oben gemachten Änderungen zu speichern.
-  */
+function saveEditedTodo(index) {
+  const select = document.getElementById(`todoEditSelect${index}`);
+  const selectedTodo = select.value;
+  const todoList = getTodoList();
+  todoList[index].text = selectedTodo;
+  saveTodoList(todoList);
+  displayTodos();
 }
 
-function cancelEdit() {
-  /*
-  Diese Funktion kann dir helfen den Editiermodus wieder zu verlasen.
-  */
+function cancelEdit(index) {
+  displayTodos();
 }
 
 function deleteTodo(index) {
-  /*
-  Implementiere diese Funktion um bereits hinzugefügte Todos
-  aus der aktuellen Liste wieder löschen zu können.
-  */
+  let todoList = getTodoList();
+  todoList.splice(index, 1);
+  saveTodoList(todoList);
+  displayTodos();
 }
 
 function displayTodos() {
-  /*
-  Diese Funktion kann dir helfen, immer die aktuellen Todos wieder
-  in der entsprechenden Liste todoList neu zu rendern, wenn andere
-  Operationen wie add, edit oder delete ausgeführt wurden.
-  */
+  const todoList = getTodoList();
+  const ul = document.getElementById('todoList');
+  ul.innerHTML = '';  // Clear the current list
+
+  todoList.forEach((todo, index) => {
+    const li = document.createElement('li');
+    li.id = `todoItem${index}`;
+    li.innerHTML = `
+      <h2>${todo.text}, ${todo.date}</h2>
+      <button onclick="editTodo(${index})" class="edit-button">Edit</button>
+      <button onclick="deleteTodo(${index})" class="delete-button">Delete</button>
+    `;
+    ul.appendChild(li);
+  });
 }
 
 function getTodoList() {
-  /*
-  Diese Funktion kann genutzt werden, um beispielsweise bei der displayTodos-
-  Funktion die aktuellen Todos aus dem Localstorage zu laden.
-  */
+  const todoListString = localStorage.getItem('todoList');
+  if (todoListString) {
+    return JSON.parse(todoListString);
+  }
+  return [];
 }
 
 function saveTodoList(todoList) {
-  /*
-  Diese Funktion kann dazu genutzt werden, um die aktuelle Todo-Liste im
-  Local Storage des Browsers zu speichern.
-  */
+  localStorage.setItem('todoList', JSON.stringify(todoList));
 }
 
-// Initial display of todos
-displayTodos();
+// Initial setup
+document.addEventListener('DOMContentLoaded', function() {
+  fillTodoSelect();
+  // Initial display of todos
+  displayTodos();
+});
