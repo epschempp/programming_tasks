@@ -1,8 +1,22 @@
 <main class="main">
-  <div class="content">
+  <div class="container">
     <h1>Vier Gewinnt!</h1>
-    <p>Spieler: {{currentPlayer}}</p>
-    <p *ngIf="winner">Gewonnen hat: {{winner}}</p>
+    <h2 *ngIf="!winner"
+        [ngClass]="{
+              playerone: currentPlayer === 1,
+              playertwo: currentPlayer === 2
+            }"
+    >
+      Spieler: {{currentPlayer}}
+    </h2>
+    <h2 *ngIf="winner"
+        [ngClass]="{
+              playerone: currentPlayer === 1,
+              playertwo: currentPlayer === 2
+            }"
+    >
+      Gewonnen hat: Spieler {{winner}}
+    </h2>
     <button (click)="onNewGameClick()">Neues Spiel</button>
     <div class="board">
       <div class="row" *ngFor="let row of board; index as j">

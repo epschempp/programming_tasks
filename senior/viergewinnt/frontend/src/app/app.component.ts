@@ -29,15 +29,18 @@ export class AppComponent {
   }
 
   onColumnClick(column: number) {
-    if (this.winner === 0) {
+    if (this.winner === 0 && !this.gameLogicService.isColumnFull(column)) {
       const result = this.gameLogicService.dropToken(
         column,
         this.currentPlayer
       );
+
       this.board = result.board;
-      this.currentPlayer = this.currentPlayer === 1 ? 2 : 1;
+
       if (result.won) {
         this.winner = this.currentPlayer;
+      } else {
+        this.currentPlayer = this.currentPlayer === 1 ? 2 : 1;
       }
     }
   }
