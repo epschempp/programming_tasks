@@ -17,7 +17,6 @@
     >
       Gewonnen hat: Spieler {{winner}}
     </h2>
-    <button (click)="onNewGameClick()">Neues Spiel</button>
     <div class="board">
       <div class="row" *ngFor="let row of board; index as j">
         <div class="cell"
@@ -34,6 +33,9 @@
         </div>
       </div>
     </div>
+    <br>
+    <br>
+    <button (click)="onNewGameClick()">Neues Spiel</button>
   </div>
 </main>
 <router-outlet />
