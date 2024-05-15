@@ -10,7 +10,7 @@ export class GamelogicService {
   // 1 = Spieler 1
   // 2 = Spieler 2
   // Dies ist nur ein Beispiel und kann gerne anders gelöst werden bspw. mit Objekten
-  private board: number[][]  = [
+  private board: number[][] = [
     [0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0],
@@ -19,6 +19,7 @@ export class GamelogicService {
     [0, 0, 0, 0, 0, 0, 0]
   ];
   private won: boolean = false;
+  private winningCombination: {row: number, col: number}[] = [];
 
   constructor() { }
 
@@ -30,14 +31,17 @@ export class GamelogicService {
 
   public resetBoard(): number[][] {
     this.board = Array.from({ length: 6 }, () => Array(7).fill(0));
+    this.winningCombination = [];
+    this.won = false;
     return this.board;
   }
 
-  public dropToken(column: number, player: number): {board: number[][], won: boolean} {
+  public dropToken(column: number, player: number): {board: number[][], won: boolean, winningCombination: {row: number, col: number}[]} {
     this.placeToken(column, player);
     return {
       board: this.board,
-      won: this.won
+      won: this.won,
+      winningCombination: this.winningCombination
     };
   }
 
@@ -50,13 +54,16 @@ export class GamelogicService {
 
   public checkVertical(column: number, row: number, player: number): boolean {
     let count = 0;
+    this.winningCombination = [];
 
     for (let i = 0; i < this.board.length; i++) {
       if (this.board[i][column] === player) {
         count++;
+        this.winningCombination.push({row: i, col: column});
         if (count === 4) return true;
       } else {
         count = 0;
+        this.winningCombination = [];
       }
     }
 
@@ -65,13 +72,16 @@ export class GamelogicService {
 
   public checkHorizontal(column: number, row: number, player: number): boolean {
     let count = 0;
+    this.winningCombination = [];
 
     for (let i = 0; i < this.board[row].length; i++) {
       if (this.board[row][i] === player) {
         count++;
+        this.winningCombination.push({row, col: i});
         if (count === 4) return true;
       } else {
         count = 0;
+        this.winningCombination = [];
       }
     }
 
@@ -81,6 +91,7 @@ export class GamelogicService {
   public checkAscendingDiagonal(column: number, row: number, player: number): boolean {
     // Überprüfung der diagonalen Reihen von links unten nach rechts oben
     let count = 0;
+    this.winningCombination = [];
     let startRow = row;
     let startCol = column;
 
@@ -94,9 +105,11 @@ export class GamelogicService {
     while (startRow >= 0 && startCol < this.board[0].length) {
       if (this.board[startRow][startCol] === player) {
         count++;
+        this.winningCombination.push({row: startRow, col: startCol});
         if (count === 4) return true;
       } else {
         count = 0;
+        this.winningCombination = [];
       }
       startRow--;
       startCol++;
@@ -108,6 +121,7 @@ export class GamelogicService {
   public checkDescendingDiagonal(column: number, row: number, player: number): boolean {
     // Überprüfung der diagonalen Reihen von rechts unten nach links oben
     let count = 0;
+    this.winningCombination = [];
     let startRow = row;
     let startCol = column;
 
@@ -121,9 +135,11 @@ export class GamelogicService {
     while (startRow >= 0 && startCol >= 0) {
       if (this.board[startRow][startCol] === player) {
         count++;
+        this.winningCombination.push({row: startRow, col: startCol});
         if (count === 4) return true;
       } else {
         count = 0;
+        this.winningCombination = [];
       }
       startRow--;
       startCol--;

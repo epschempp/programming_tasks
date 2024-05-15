@@ -22,6 +22,7 @@ export class AppComponent {
     [0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0],
   ];
+  winningCombination: {row: number, col: number}[] = [];
 
   constructor(private gameLogicService: GamelogicService) {
     this.board = this.gameLogicService.getBoard();
@@ -36,6 +37,7 @@ export class AppComponent {
       );
 
       this.board = result.board;
+      this.winningCombination = result.winningCombination;
 
       if (result.won) {
         this.winner = this.currentPlayer;
@@ -49,5 +51,14 @@ export class AppComponent {
     this.board = this.gameLogicService.resetBoard();
     this.currentPlayer = 1;
     this.winner = 0;
+    this.winningCombination = [];
+  }
+
+  isWinningCell(row: number, col: number): boolean {
+    if (this.winner === 0) {
+      return false;
+    }
+    // Prüfen, ob die Zelle Teil der Gewinnkombination ist
+    return this.winningCombination.some(cell => cell.row === row && cell.col === col);
   }
 }

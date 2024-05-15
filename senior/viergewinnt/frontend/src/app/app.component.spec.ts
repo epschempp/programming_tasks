@@ -54,7 +54,8 @@ describe('AppComponent', () => {
   describe('onColumnClick', () => {
     it('should handle column click correctly', () => {
       const column = 0;
-      gameLogicService.dropToken.and.returnValue({ board: app.board, won: false });
+      const mockWinningCombination = [{ row: 0, col: 0 }];
+      gameLogicService.dropToken.and.returnValue({ board: app.board, won: false, winningCombination: mockWinningCombination });
       gameLogicService.isColumnFull.and.returnValue(false);
 
       app.onColumnClick(column);
@@ -62,11 +63,12 @@ describe('AppComponent', () => {
       expect(gameLogicService.dropToken).toHaveBeenCalledWith(column, 1);
       expect(app.currentPlayer).toBe(2);
       expect(app.winner).toBe(0);
+      expect(app.winningCombination).toEqual(mockWinningCombination);
     });
 
     it('should switch player after a move if column is not full', () => {
       const column = 0;
-      gameLogicService.dropToken.and.returnValue({ board: app.board, won: false });
+      gameLogicService.dropToken.and.returnValue({ board: app.board, won: false, winningCombination: [] });
       gameLogicService.isColumnFull.and.returnValue(false);
 
       app.onColumnClick(column);
@@ -76,7 +78,7 @@ describe('AppComponent', () => {
 
     it('should not switch player if column is full', () => {
       const column = 0;
-      gameLogicService.dropToken.and.returnValue({ board: app.board, won: false });
+      gameLogicService.dropToken.and.returnValue({ board: app.board, won: false, winningCombination: [] });
       gameLogicService.isColumnFull.and.returnValue(true);
 
       app.onColumnClick(column);
@@ -86,7 +88,7 @@ describe('AppComponent', () => {
 
     it('should set winner if game is won', () => {
       const column = 0;
-      gameLogicService.dropToken.and.returnValue({ board: app.board, won: true });
+      gameLogicService.dropToken.and.returnValue({ board: app.board, won: true, winningCombination: [] });
 
       app.onColumnClick(column);
 
@@ -112,6 +114,28 @@ describe('AppComponent', () => {
       expect(app.board).toEqual(gameLogicService.resetBoard());
       expect(app.currentPlayer).toBe(1);
       expect(app.winner).toBe(0);
+      expect(app.winningCombination).toEqual([]);
     });
   });
+
+  describe('isWinningCell', () => {
+    it('should return true for cells in the winning combination when there is a winner', () => {
+      app.winner = 1;
+      app.winningCombination = [{ row: 0, col: 0 }, { row: 1, col: 0 }, { row: 2, col: 0 }, { row: 3, col: 0 }];
+      expect(app.isWinningCell(0, 0)).toBeTrue();
+      expect(app.isWinningCell(1, 0)).toBeTrue();
+      expect(app.isWinningCell(2, 0)).toBeTrue();
+      expect(app.isWinningCell(3, 0)).toBeTrue();
+    });
+
+    it('should return false for any cell when there is no winner', () => {
+      app.winner = 0;
+      app.winningCombination = [{ row: 0, col: 0 }, { row: 1, col: 0 }, { row: 2, col: 0 }, { row: 3, col: 0 }];
+      expect(app.isWinningCell(0, 0)).toBeFalse();
+      expect(app.isWinningCell(1, 0)).toBeFalse();
+      expect(app.isWinningCell(2, 0)).toBeFalse();
+      expect(app.isWinningCell(3, 0)).toBeFalse();
+    });
+  });
+
 });

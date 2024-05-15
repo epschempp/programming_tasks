@@ -81,6 +81,8 @@ describe('GamelogicService', () => {
         [0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0]
       ]);
+      expect(service['winningCombination']).toEqual([]);
+      expect(service['won']).toBeFalse();
     });
   });
 
