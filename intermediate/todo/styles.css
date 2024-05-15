@@ -46,6 +46,8 @@ body {
   }
   
   .add-button {
+    display: block;
+    width: 90%;
     background-color: #4CAF50;
     color: #fff;
     margin-right: 10px;
